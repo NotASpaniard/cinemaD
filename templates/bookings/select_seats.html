@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block title %}Chọn Ghế - Rạp Chiếu Phim{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">Chọn Ghế</h3>
+                </div>
+                <div class="card-body">
+                    <!-- Thông tin đặt vé -->
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            {% if showtime.movie.poster %}
+                            <img src="{{ showtime.movie.poster.url }}" class="img-fluid rounded" alt="{{ showtime.movie.title }}">
+                            {% else %}
+                            <img src="https://via.placeholder.com/300x450" class="img-fluid rounded" alt="{{ showtime.movie.title }}">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-8">
+                            <h4>{{ showtime.movie.title }}</h4>
+                            <p class="mb-2">
+                                <i class="fas fa-calendar"></i> {{ showtime.start_time|date:"d/m/Y" }}
+                            </p>
+                            <p class="mb-2">
+                                <i class="fas fa-clock"></i> {{ showtime.start_time|date:"H:i" }}
+                            </p>
+                            <p class="mb-2">
+                                <i class="fas fa-film"></i> {{ showtime.room.name }}
+                            </p>
+                            <p class="mb-2">
+                                <i class="fas fa-ticket-alt"></i> Số vé: {{ num_tickets }}
+                            </p>
+                            <p class="mb-2">
+                                <i class="fas fa-chair"></i> Loại ghế: {{ seat_type|title }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Sơ đồ ghế -->
+                    <div class="mb-4">
+                        <h5>Sơ Đồ Ghế</h5>
+                        <div class="seat-map">
+                            <div class="screen mb-4 text-center">
+                                <div class="bg-dark text-white p-2 d-inline-block rounded">
+                                    Màn Hình
+                                </div>
+                            </div>
+                            
+                            <form method="post" action="{% url 'bookings:payment' showtime.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="num_tickets" value="{{ num_tickets }}">
+                                <input type="hidden" name="seat_type" value="{{ seat_type }}">
+                                
+                                <div class="row g-2">
+                                    {% for row in showtime.room.rows %}
+                                    <div class="col-12">
+                                        <div class="d-flex justify-content-center">
+                                            <span class="me-2">{{ row }}</span>
+                                            {% for col in showtime.room.columns %}
+                                            <div class="seat mx-1">
+                                                <input type="checkbox" 
+                                                       class="btn-check" 
+                                                       id="seat_{{ row }}{{ col }}" 
+                                                       name="seats" 
+                                                       value="{{ row }}{{ col }}"
+                                                       {% if row|add:col in booked_seats %}disabled{% endif %}>
+                                                <label class="btn btn-outline-primary" 
+                                                       for="seat_{{ row }}{{ col }}">
+                                                    {{ col }}
+                                                </label>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+
+                                <!-- Chú thích -->
+                                <div class="mt-4">
+                                    <div class="d-flex justify-content-center">
+                                        <div class="me-3">
+                                            <span class="badge bg-success">Ghế Trống</span>
+                                        </div>
+                                        <div class="me-3">
+                                            <span class="badge bg-danger">Ghế Đã Đặt</span>
+                                        </div>
+                                        <div>
+                                            <span class="badge bg-primary">Ghế Đã Chọn</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="text-center mt-4">
+                                    <button type="submit" class="btn btn-primary" id="submit-btn" disabled>
+                                        <i class="fas fa-arrow-right"></i> Tiếp Tục
+                                    </button>
+                                    <a href="{% url 'bookings:create_booking' showtime.id %}" class="btn btn-secondary">
+                                        <i class="fas fa-times"></i> Hủy
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const checkboxes = document.querySelectorAll('input[name="seats"]');
+    const submitBtn = document.getElementById('submit-btn');
+    const numTickets = {{ num_tickets }};
+
+    function updateSubmitButton() {
+        const checkedBoxes = document.querySelectorAll('input[name="seats"]:checked');
+        submitBtn.disabled = checkedBoxes.length !== numTickets;
+    }
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const checkedBoxes = document.querySelectorAll('input[name="seats"]:checked');
+            if (checkedBoxes.length > numTickets) {
+                this.checked = false;
+            }
+            updateSubmitButton();
+        });
+    });
+});
+</script>
+{% endblock %}
+{% endblock %} 

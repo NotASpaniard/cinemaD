@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Sắp Chiếu - Rạp Chiếu Phim{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">Sắp Chiếu</h1>
+            
+            {% if movies %}
+            <div class="row">
+                {% for movie in movies %}
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100">
+                        {% if movie.poster %}
+                        <img src="{{ movie.poster.url }}" class="card-img-top" alt="{{ movie.title }}">
+                        {% else %}
+                        <img src="https://via.placeholder.com/300x450" class="card-img-top" alt="{{ movie.title }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ movie.title }}</h5>
+                            <p class="card-text">
+                                <small class="text-muted">
+                                    <i class="fas fa-calendar"></i> {{ movie.release_date|date:"d/m/Y" }}
+                                </small>
+                            </p>
+                            <p class="card-text">
+                                <small class="text-muted">
+                                    <i class="fas fa-clock"></i> {{ movie.duration }} phút
+                                </small>
+                            </p>
+                            <a href="{% url 'movies:movie_detail' movie.slug %}" class="btn btn-primary">
+                                Chi Tiết
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="alert alert-info">
+                Hiện tại không có phim nào sắp chiếu.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

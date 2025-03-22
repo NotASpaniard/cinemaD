@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Liên Hệ - Rạp Chiếu Phim{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Liên Hệ</h1>
+    
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Thông Tin Liên Hệ</h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-3">
+                            <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                            123 Đường ABC, Quận 1, TP.HCM
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-phone text-primary me-2"></i>
+                            0123.456.789
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-envelope text-primary me-2"></i>
+                            info@rapchieuphim.com
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-clock text-primary me-2"></i>
+                            Thứ 2 - Chủ Nhật: 8:00 - 23:00
+                        </li>
+                    </ul>
+                    
+                    <h3 class="card-title mt-4">Theo Dõi Chúng Tôi</h3>
+                    <div class="social-links">
+                        <a href="#" class="text-primary me-3"><i class="fab fa-facebook fa-2x"></i></a>
+                        <a href="#" class="text-primary me-3"><i class="fab fa-instagram fa-2x"></i></a>
+                        <a href="#" class="text-primary me-3"><i class="fab fa-twitter fa-2x"></i></a>
+                        <a href="#" class="text-primary"><i class="fab fa-youtube fa-2x"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Gửi Tin Nhắn</h3>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Họ Tên</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Chủ Đề</label>
+                            <input type="text" class="form-control" id="subject" name="subject" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Nội Dung</label>
+                            <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Gửi Tin Nhắn</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Bản Đồ</h3>
+                    <div class="ratio ratio-16x9">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.269311907246!2d106.70042331531915!3d10.777201399234998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752d9a092f836f%3A0xba15953fc2682d5d!2zVHLGsOG7nW5nIMSQ4bqhaSBI4buNYyBOZ2_huqFpIE5hbQ!5e0!3m2!1svi!2s!4v1648191234567!5m2!1svi!2s" 
+                                width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

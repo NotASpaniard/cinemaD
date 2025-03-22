@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Đặt Vé - Rạp Chiếu Phim{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">Đặt Vé</h3>
+                </div>
+                <div class="card-body">
+                    <!-- Thông tin phim và suất chiếu -->
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            {% if showtime.movie.poster %}
+                            <img src="{{ showtime.movie.poster.url }}" class="img-fluid rounded" alt="{{ showtime.movie.title }}">
+                            {% else %}
+                            <img src="https://via.placeholder.com/300x450" class="img-fluid rounded" alt="{{ showtime.movie.title }}">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-8">
+                            <h4>{{ showtime.movie.title }}</h4>
+                            <p class="mb-2">
+                                <i class="fas fa-calendar"></i> {{ showtime.start_time|date:"d/m/Y" }}
+                            </p>
+                            <p class="mb-2">
+                                <i class="fas fa-clock"></i> {{ showtime.start_time|date:"H:i" }}
+                            </p>
+                            <p class="mb-2">
+                                <i class="fas fa-film"></i> {{ showtime.room.name }}
+                            </p>
+                            <p class="mb-2">
+                                <i class="fas fa-chair"></i> Số ghế còn trống: {{ showtime.available_seats }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Form đặt vé -->
+                    <form method="post" action="{% url 'bookings:select_seats' showtime.id %}">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="num_tickets" class="form-label">Số Lượng Vé</label>
+                            <select class="form-select" id="num_tickets" name="num_tickets" required>
+                                {% for i in "123456789"|make_list %}
+                                <option value="{{ i }}">{{ i }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="seat_type" class="form-label">Loại Ghế</label>
+                            <select class="form-select" id="seat_type" name="seat_type" required>
+                                <option value="standard">Ghế Thường ({{ showtime.room.standard_price }}đ)</option>
+                                <option value="vip">Ghế VIP ({{ showtime.room.vip_price }}đ)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-arrow-right"></i> Chọn Ghế
+                            </button>
+                            <a href="{% url 'movies:movie_detail' showtime.movie.slug %}" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Hủy
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

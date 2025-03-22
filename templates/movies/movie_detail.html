@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ movie.title }} - Rạp Chiếu Phim{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <!-- Thông tin phim -->
+        <div class="col-md-4">
+            <div class="card mb-4">
+                {% if movie.poster %}
+                <img src="{{ movie.poster.url }}" class="card-img-top" alt="{{ movie.title }}">
+                {% else %}
+                <img src="https://via.placeholder.com/300x450" class="card-img-top" alt="{{ movie.title }}">
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <h1 class="mb-4">{{ movie.title }}</h1>
+            
+            <div class="mb-4">
+                <h5>Thông Tin Phim</h5>
+                <ul class="list-unstyled">
+                    <li><strong>Thời lượng:</strong> {{ movie.duration }} phút</li>
+                    <li><strong>Ngày công chiếu:</strong> {{ movie.release_date|date:"d/m/Y" }}</li>
+                    <li><strong>Thể loại:</strong> 
+                        {% for genre in movie.genres.all %}
+                        <span class="badge bg-secondary">{{ genre.name }}</span>
+                        {% endfor %}
+                    </li>
+                    <li><strong>Đạo diễn:</strong> {{ movie.director }}</li>
+                    <li><strong>Diễn viên:</strong> {{ movie.cast }}</li>
+                </ul>
+            </div>
+
+            <div class="mb-4">
+                <h5>Nội Dung</h5>
+                <p>{{ movie.description }}</p>
+            </div>
+
+            {% if movie.trailer_url %}
+            <div class="mb-4">
+                <h5>Trailer</h5>
+                <div class="ratio ratio-16x9">
+                    <iframe src="{{ movie.trailer_url }}" allowfullscreen></iframe>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Lịch chiếu -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <h2 class="mb-4">Lịch Chiếu</h2>
+            
+            {% if showtimes %}
+            <div class="row">
+                {% for showtime in showtimes %}
+                <div class="col-md-3 mb-3">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ showtime.start_time|date:"H:i" }}</h5>
+                            <p class="card-text">{{ showtime.room.name }}</p>
+                            <a href="{% url 'bookings:create_booking' showtime.id %}" 
+                               class="btn btn-primary">
+                                Đặt Vé
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="alert alert-info">
+                Hiện tại không có lịch chiếu cho phim này.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

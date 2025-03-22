@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Thông Tin Cá Nhân - Rạp Chiếu Phim{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">Thông Tin Cá Nhân</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <strong>Tên đăng nhập:</strong>
+                        </div>
+                        <div class="col-sm-9">
+                            {{ user.username }}
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <strong>Email:</strong>
+                        </div>
+                        <div class="col-sm-9">
+                            {{ user.email }}
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <strong>Họ và tên:</strong>
+                        </div>
+                        <div class="col-sm-9">
+                            {{ user.get_full_name|default:"Chưa cập nhật" }}
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <strong>Số điện thoại:</strong>
+                        </div>
+                        <div class="col-sm-9">
+                            {{ user.phone_number|default:"Chưa cập nhật" }}
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <strong>Địa chỉ:</strong>
+                        </div>
+                        <div class="col-sm-9">
+                            {{ user.address|default:"Chưa cập nhật" }}
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <strong>Ngày tham gia:</strong>
+                        </div>
+                        <div class="col-sm-9">
+                            {{ user.date_joined|date:"d/m/Y" }}
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <a href="{% url 'accounts:edit_profile' %}" class="btn btn-primary me-2">
+                            <i class="fas fa-edit"></i> Chỉnh Sửa
+                        </a>
+                        <a href="{% url 'accounts:password_change' %}" class="btn btn-secondary">
+                            <i class="fas fa-key"></i> Đổi Mật Khẩu
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
