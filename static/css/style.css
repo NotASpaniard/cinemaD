@@ -1,1 +1,179 @@
- 
+/* Global styling tweaks */
+
+body {
+    background: linear-gradient(180deg, #0f172a 0%, #07102a 100%);
+    color: #e6eef8;
+    font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+}
+
+a {
+    color: #ffd166;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6);
+}
+
+
+/* Seat map */
+
+.seat-map {
+    padding: 1rem;
+}
+
+.screen {
+    margin-bottom: 1.5rem;
+}
+
+.seat {
+    display: inline-block;
+}
+
+.seat .btn {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 8px;
+    transition: transform 160ms ease, box-shadow 160ms ease, background-color 200ms ease;
+    box-shadow: 0 4px 10px rgba(2, 6, 23, 0.6);
+}
+
+.seat .btn:hover {
+    transform: translateY(-4px) scale(1.04);
+}
+
+.seat .btn:active {
+    transform: translateY(-1px) scale(0.99);
+}
+
+.seat .btn.btn-outline-primary {
+    background: linear-gradient(180deg, #1e293b, #0f172a);
+    color: #cbd5e1;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.seat .btn.selected,
+.seat .btn.selected:hover {
+    background: linear-gradient(180deg, #4f46e5, #7c3aed);
+    color: #fff;
+    box-shadow: 0 8px 22px rgba(76, 29, 149, 0.4);
+}
+
+.seat .btn.booked,
+.seat .btn:disabled {
+    background: linear-gradient(180deg, #374151, #1f2937);
+    color: #9ca3af;
+    border-color: rgba(0, 0, 0, 0.2);
+    cursor: not-allowed;
+    opacity: 0.85;
+}
+
+
+/* Badges legend */
+
+.badge {
+    font-weight: 600;
+}
+
+
+/* Selection summary floating box */
+
+.selection-summary {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background: rgba(2, 6, 23, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(2, 6, 23, 0.7);
+    z-index: 1050;
+    min-width: 200px;
+    backdrop-filter: blur(6px);
+}
+
+.selection-summary h6 {
+    margin: 0 0 0.5rem 0;
+    color: #ffd166;
+}
+
+.selection-summary .seats {
+    font-weight: 700;
+    color: #fff;
+}
+
+
+/* Responsive tweaks */
+
+@media (max-width: 576px) {
+    .seat .btn {
+        width: 36px;
+        height: 36px;
+    }
+    .selection-summary {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+    }
+}
+
+
+/* Smooth entry animations */
+
+.fade-in-up {
+    animation: fadeInUp 420ms ease both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Toast-like small helpers */
+
+.mini-toast {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 20px;
+    z-index: 1060;
+}
+
+
+/* small utility */
+
+.muted {
+    color: #94a3b8;
+}
+
+
+/* Improve form controls to match theme */
+
+.form-select,
+.form-control {
+    background: rgba(255, 255, 255, 0.02);
+    color: #e6eef8;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+
+/* Buttons */
+
+.btn-primary {
+    background: linear-gradient(90deg, #06b6d4, #3b82f6);
+    border: 0;
+}
+
+.btn-secondary {
+    background: linear-gradient(90deg, #6b7280, #374151);
+    border: 0;
+}

@@ -62,17 +62,18 @@
                                             <span class="me-2">{{ row }}</span>
                                             {% for col in showtime.room.columns %}
                                             <div class="seat mx-1">
-                                                <input type="checkbox" 
-                                                       class="btn-check" 
-                                                       id="seat_{{ row }}{{ col }}" 
-                                                       name="seats" 
-                                                       value="{{ row }}{{ col }}"
-                                                       {% if row|add:col in booked_seats %}disabled{% endif %}>
-                                                <label class="btn btn-outline-primary" 
-                                                       for="seat_{{ row }}{{ col }}">
-                                                    {{ col }}
-                                                </label>
-                                            </div>
+                                  <input type="checkbox" 
+                                      class="btn-check" 
+                                      id="seat_{{ row }}{{ col }}" 
+                                      name="seats" 
+                                      value="{{ row }}{{ col }}"
+                                      data-seat-id="{{ row }}{{ col }}"
+                                      {% if row|add:col in booked_seats %}disabled{% endif %}>
+                                  <label class="btn btn-outline-primary" 
+                                      for="seat_{{ row }}{{ col }}">
+                                   {{ col }}
+                                  </label>
+                              </div>
                                             {% endfor %}
                                         </div>
                                     </div>
@@ -94,6 +95,7 @@
                                     </div>
                                 </div>
 
+                                {% json_script booked_seats "bookedSeats" %}
                                 <div class="text-center mt-4">
                                     <button type="submit" class="btn btn-primary" id="submit-btn" disabled>
                                         <i class="fas fa-arrow-right"></i> Tiếp Tục
@@ -114,24 +116,33 @@
 {% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const checkboxes = document.querySelectorAll('input[name="seats"]');
-    const submitBtn = document.getElementById('submit-btn');
+    // initialize seat manager and connect to UX summary
     const numTickets = {{ num_tickets }};
+    const bookedSeats = {{ booked_seats|safe }} || [];
 
-    function updateSubmitButton() {
-        const checkedBoxes = document.querySelectorAll('input[name="seats"]:checked');
-        submitBtn.disabled = checkedBoxes.length !== numTickets;
-    }
-
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            const checkedBoxes = document.querySelectorAll('input[name="seats"]:checked');
-            if (checkedBoxes.length > numTickets) {
-                this.checked = false;
-            }
-            updateSubmitButton();
-        });
+    // make sure inputs have data-seat-id for non-js fallback
+    document.querySelectorAll('input[name="seats"]').forEach(el => {
+        if (!el.dataset.seatId) el.dataset.seatId = el.value;
     });
+
+    window.seatManagerInstance = new SeatManager({
+        container: '.seat-map',
+        seatClass: '.seat',
+        selectedClass: 'selected',
+        bookedClass: 'booked',
+        maxSeats: numTickets,
+        onSelectionChange: function(data) {
+            const submitBtn = document.getElementById('submit-btn');
+            if (submitBtn) {
+                submitBtn.disabled = data.totalSelected !== numTickets;
+            }
+        }
+    });
+
+    // set booked seats
+    try { window.seatManagerInstance.setBookedSeats(bookedSeats); } catch(e){}
+    // update summary initially
+    try { if (window.UX) window.UX.updateSummary([]); } catch(e){}
 });
 </script>
 {% endblock %}

@@ -130,16 +130,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Set booked seats if available
-    const bookedSeatsData = document.querySelector('input[name="booked_seats"]');
-    if (bookedSeatsData) {
-        try {
-            const bookedSeats = JSON.parse(bookedSeatsData.value);
-            seatManager.setBookedSeats(bookedSeats);
-        } catch (e) {
-            console.error('Error parsing booked seats:', e);
+    // Set booked seats if available: prefer json_script (#bookedSeats)
+    let bookedSeats = [];
+    try {
+        const script = document.getElementById('bookedSeats');
+        if (script) {
+            bookedSeats = JSON.parse(script.textContent || '[]');
+        } else {
+            const bookedSeatsData = document.querySelector('input[name="booked_seats"]');
+            if (bookedSeatsData) bookedSeats = JSON.parse(bookedSeatsData.value || '[]');
         }
+    } catch (e) {
+        console.error('Error parsing booked seats:', e);
     }
+    seatManager.setBookedSeats(bookedSeats);
+
+    // expose instance globally for other UX scripts
+    window.seatManagerInstance = seatManager;
 });
 
 // Export for use in other files

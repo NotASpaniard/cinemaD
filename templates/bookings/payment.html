@@ -41,22 +41,22 @@
                     </div>
 
                     <!-- Chi tiết thanh toán -->
-                    <div class="mb-4">
+                    <div class="mb-4 fade-in-up">
                         <h5>Chi Tiết Thanh Toán</h5>
                         <div class="table-responsive">
                             <table class="table">
                                 <tbody>
                                     <tr>
                                         <td>Giá vé {{ seat_type|title }}:</td>
-                                        <td class="text-end">{{ price_per_ticket }}đ</td>
+                                        <td class="text-end" id="pricePerTicket">{{ price_per_ticket }}đ</td>
                                     </tr>
                                     <tr>
                                         <td>Số lượng vé:</td>
-                                        <td class="text-end">{{ num_tickets }}</td>
+                                        <td class="text-end" id="numTickets">{{ num_tickets }}</td>
                                     </tr>
                                     <tr>
                                         <td>Tổng tiền:</td>
-                                        <td class="text-end"><strong>{{ total_price }}đ</strong></td>
+                                        <td class="text-end"><strong id="totalPrice" data-total-price="{{ total_price }}">{{ total_price }}đ</strong></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -64,7 +64,7 @@
                     </div>
 
                     <!-- Form thanh toán -->
-                    <form method="post" action="{% url 'bookings:booking_confirmation' showtime.id %}">
+                    <form method="post" id="paymentForm" action="{% url 'bookings:booking_confirmation' showtime.id %}">
                         {% csrf_token %}
                         <input type="hidden" name="num_tickets" value="{{ num_tickets }}">
                         <input type="hidden" name="seat_type" value="{{ seat_type }}">
@@ -73,7 +73,7 @@
                         
                         <div class="mb-3">
                             <label for="payment_method" class="form-label">Phương Thức Thanh Toán</label>
-                            <select class="form-select" id="payment_method" name="payment_method" required>
+                            <select class="form-select" id="paymentMethod" name="payment_method" required>
                                 <option value="">Chọn phương thức thanh toán</option>
                                 <option value="cash">Tiền mặt</option>
                                 <option value="bank">Chuyển khoản ngân hàng</option>
@@ -88,7 +88,7 @@
                         </div>
 
                         <div class="text-center">
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-primary" id="submitPayment">
                                 <i class="fas fa-check"></i> Xác Nhận Đặt Vé
                             </button>
                             <a href="{% url 'bookings:select_seats' showtime.id %}" class="btn btn-secondary">

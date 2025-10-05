@@ -31,10 +31,10 @@ def create_booking(request, showtime_id):
 def select_seats(request, showtime_id):
     showtime = get_object_or_404(Showtime, id=showtime_id, is_active=True)
     seats = Seat.objects.filter(theater=showtime.theater)
-    booked_seats = BookingSeat.objects.filter(
+    booked_seats = list(BookingSeat.objects.filter(
         booking__showtime=showtime,
         booking__status__in=['pending', 'confirmed']
-    ).values_list('seat_id', flat=True)
+    ).values_list('seat_id', flat=True))
     
     if request.method == 'POST':
         selected_seats = request.POST.getlist('seats')
