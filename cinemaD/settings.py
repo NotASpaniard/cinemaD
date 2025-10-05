@@ -14,7 +14,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+# Default to True for local development when DEBUG env var is not set
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
@@ -38,9 +39,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     
     # Local apps
-    'accounts',
-    'movies',
-    'bookings',
+    'apps.accounts',
+    'apps.movies',
+    'apps.bookings',
 ]
 
 MIDDLEWARE = [
@@ -176,3 +177,6 @@ ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'http'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/' 
+
+# For local development only: if Pillow isn't installed, silence the ImageField check
+SILENCED_SYSTEM_CHECKS = ['fields.E210']

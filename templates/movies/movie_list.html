@@ -1,1 +1,45 @@
- 
+{% extends 'base.html' %}
+
+{% block title %}Danh sách phim - Rạp Chiếu Phim{% endblock %}
+
+{% block content %}
+<div class="container">
+	<div class="hero-section mb-4">
+		<div class="row align-items-center">
+			<div class="col-md-8">
+				<h1 class="display-5">Phim hay hôm nay</h1>
+				<p class="lead">Chọn phim, chọn suất, đặt vé nhanh chóng và an toàn.</p>
+			</div>
+			<div class="col-md-4 text-md-end">
+				<a href="#" class="btn btn-primary">Tìm suất chiếu</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="section-title">
+		<h2>Đang Chiếu</h2>
+	</div>
+
+	<div class="movie-grid mb-5">
+		{% for movie in movies %}
+		<div class="card movie-card">
+			{% if movie.poster %}
+			<img class="poster" src="{{ movie.poster.url }}" alt="{{ movie.title }}">
+			{% else %}
+			<img class="poster" src="https://via.placeholder.com/400x600" alt="{{ movie.title }}">
+			{% endif %}
+			<div class="card-body">
+				<h5 class="card-title">{{ movie.title }}</h5>
+				<p class="muted small">{{ movie.duration }} phút • {{ movie.release_date|date:"d/m/Y" }}</p>
+				<div class="d-flex justify-content-between align-items-center mt-2">
+					<a href="{% url 'movies:movie_detail' movie.slug %}" class="btn btn-sm btn-primary">Chi tiết</a>
+					<span class="badge bg-secondary">{{ movie.rating }}</span>
+				</div>
+			</div>
+		</div>
+		{% empty %}
+		<p>Không có phim.</p>
+		{% endfor %}
+	</div>
+</div>
+{% endblock %}

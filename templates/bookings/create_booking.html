@@ -6,10 +6,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 mx-auto">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title mb-0">Đặt Vé</h3>
-                </div>
+            <div class="card movie-card p-3">
                 <div class="card-body">
                     <!-- Thông tin phim và suất chiếu -->
                     <div class="row mb-4">
@@ -58,11 +55,11 @@
                             </select>
                         </div>
                         
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary">
+                        <div class="text-center mt-3">
+                            <button type="submit" class="btn btn-primary btn-lg">
                                 <i class="fas fa-arrow-right"></i> Chọn Ghế
                             </button>
-                            <a href="{% url 'movies:movie_detail' showtime.movie.slug %}" class="btn btn-secondary">
+                            <a href="{% url 'movies:movie_detail' showtime.movie.slug %}" class="btn btn-outline-light ms-2">
                                 <i class="fas fa-times"></i> Hủy
                             </a>
                         </div>

@@ -6,10 +6,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 mx-auto">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title mb-0">Chọn Ghế</h3>
-                </div>
+            <div class="card movie-card p-3">
                 <div class="card-body">
                     <!-- Thông tin đặt vé -->
                     <div class="row mb-4">
@@ -43,7 +40,7 @@
                     <!-- Sơ đồ ghế -->
                     <div class="mb-4">
                         <h5>Sơ Đồ Ghế</h5>
-                        <div class="seat-map">
+                        <div class="seat-map p-3 bg-dark rounded">
                             <div class="screen mb-4 text-center">
                                 <div class="bg-dark text-white p-2 d-inline-block rounded">
                                     Màn Hình
@@ -97,10 +94,10 @@
 
                                 {% json_script booked_seats "bookedSeats" %}
                                 <div class="text-center mt-4">
-                                    <button type="submit" class="btn btn-primary" id="submit-btn" disabled>
+                                    <button type="submit" class="btn btn-primary btn-lg" id="submit-btn" disabled>
                                         <i class="fas fa-arrow-right"></i> Tiếp Tục
                                     </button>
-                                    <a href="{% url 'bookings:create_booking' showtime.id %}" class="btn btn-secondary">
+                                    <a href="{% url 'bookings:create_booking' showtime.id %}" class="btn btn-outline-light ms-2">
                                         <i class="fas fa-times"></i> Hủy
                                     </a>
                                 </div>
