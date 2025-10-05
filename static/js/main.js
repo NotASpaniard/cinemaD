@@ -1,18 +1,18 @@
 // Main JavaScript file
 
-// Initialize tooltips
-document.addEventListener('DOMContentLoaded', function() {
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
+function initializeTooltips() {
+    var tooltipTriggerList = Array.prototype.slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.forEach(function(tooltipTriggerEl) {
+        new bootstrap.Tooltip(tooltipTriggerEl);
     });
+}
 
-    // Initialize popovers
-    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-    var popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
-        return new bootstrap.Popover(popoverTriggerEl);
+function initializePopovers() {
+    var popoverTriggerList = Array.prototype.slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+    popoverTriggerList.forEach(function(popoverTriggerEl) {
+        new bootstrap.Popover(popoverTriggerEl);
     });
-});
+}
 
 // Form validation
 function validateForm(formId) {
@@ -35,10 +35,11 @@ function validateForm(formId) {
 }
 
 // Seat selection
-function updateSeatSelection() {
+function updateSeatSelection(minRequired = 1) {
     var checkboxes = document.querySelectorAll('input[name="seats"]');
     var submitBtn = document.getElementById('submit-btn');
-    var numTickets = parseInt(document.querySelector('input[name="num_tickets"]').value);
+    var numTicketsInput = document.querySelector('input[name="num_tickets"]');
+    var numTickets = numTicketsInput ? parseInt(numTicketsInput.value) : minRequired;
 
     checkboxes.forEach(function(checkbox) {
         checkbox.addEventListener('change', function() {
@@ -46,7 +47,7 @@ function updateSeatSelection() {
             if (checkedBoxes.length > numTickets) {
                 this.checked = false;
             }
-            submitBtn.disabled = checkedBoxes.length !== numTickets;
+            submitBtn && (submitBtn.disabled = checkedBoxes.length < numTickets);
         });
     });
 }
@@ -215,6 +216,7 @@ function updatePasswordStrength(input) {
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize tooltips and popovers
     initializeTooltips();
+    initializePopovers();
 
     // Initialize form validation
     var forms = document.querySelectorAll('form');
@@ -229,7 +231,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize seat selection
     if (document.querySelector('input[name="seats"]')) {
-        updateSeatSelection();
+        updateSeatSelection(1);
     }
 
     // Initialize movie search

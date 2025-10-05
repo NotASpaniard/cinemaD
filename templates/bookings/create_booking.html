@@ -29,10 +29,7 @@
                                 <i class="fas fa-clock"></i> {{ showtime.start_time|date:"H:i" }}
                             </p>
                             <p class="mb-2">
-                                <i class="fas fa-film"></i> {{ showtime.room.name }}
-                            </p>
-                            <p class="mb-2">
-                                <i class="fas fa-chair"></i> Số ghế còn trống: {{ showtime.available_seats }}
+                                <i class="fas fa-film"></i> {{ showtime.theater.name }}
                             </p>
                         </div>
                     </div>
@@ -53,8 +50,8 @@
                         <div class="mb-3">
                             <label for="seat_type" class="form-label">Loại Ghế</label>
                             <select class="form-select" id="seat_type" name="seat_type" required>
-                                <option value="standard">Ghế Thường ({{ showtime.room.standard_price }}đ)</option>
-                                <option value="vip">Ghế VIP ({{ showtime.room.vip_price }}đ)</option>
+                                <option value="standard">Ghế Thường</option>
+                                <option value="vip">Ghế VIP</option>
                             </select>
                         </div>
                         
